@@ -341,6 +341,16 @@ the definition of tidy data and how to tidy data is taught in the following link
 q1: transform the **wins_data_frame** into a data frame called **wins_tidy** which contains the same information but has just four columns entitled: \"Team\", \"Year\", \"Wins\", \"Total\". Hint: can do this by using **rename**, **pivot_longer**, **mutate** and **separate**
 
 ```{r}
+# the point is use of rename: new_n=old_n
+# and how to use pivot_longer: 
+#   cols---> choose columns to pivot
+#   names_to---> the original columns gathered into a variable
+#   values_to---> the value corespond to every original column
+# use of seperate:
+#   value---> choose a column to separate
+#   c() ---> separate result columns
+#   sep ---> separate sign
+# mutate: can be use to change the type of columns
 wins_tidy <- wins_data_frame%>%
   rename(Team=...1)%>%
   pivot_longer(cols=!'Team', names_to='Year', values_to = 'value') %>%
@@ -364,6 +374,16 @@ losses_data_frame <- read_excel(file_path, sheet= "Losses")
 then transform it into a tidy frame
 
 ```{r}
+# the point is use of rename: new_n=old_n
+# and how to use pivot_longer: 
+#   cols---> choose columns to pivot
+#   names_to---> the original columns gathered into a variable
+#   values_to---> the value corespond to every original column
+# use of seperate:
+#   value---> choose a column to separate
+#   c() ---> separate result columns
+#   sep ---> separate sign
+# mutate: can be use to change the type of columns
 losses_tidy <- losses_data_frame%>%
   rename(Team= ...1)%>%
   pivot_longer(cols=!'Team', names_to= 'Year', values_to= 'value')%>%
@@ -380,6 +400,8 @@ losses_tidy %>% head(5)
 q3: combine two frames into a single frame entitled 'hockey_df'
 
 ```{r}
+# the point is how to use .name in across and 
+# c() to choose columns to across
 hockey_df <- inner_join(wins_tidy, 
                         losses_tidy)%>%
     mutate(Draws=Total-(Wins+Losses))%>%
@@ -395,6 +417,9 @@ hockey_df %>% head(5)
 q4: to conclude generate a summary data frame which displays the median win rate, the mean win rate, etc for each team. Rows represent teams, and sorted in descending order on median win rate. Hint: may use **select**, **group_by**, **across** and **arrange**
 
 ```{r}
+# key point is use select to generate new name for each col
+# use of multifunctions in across and each function can be named
+# use {.fn} to refer each function name
 sum_table <- hockey_df%>%
   select(Team, W=Wins_rt, L=Losses_rt, D=Draws_rt)%>%
   group_by(Team)%>%
