@@ -436,3 +436,59 @@ check
 ```{r}
 sum_table
 ```
+
+## 3. Visualization
+
+using ggplot2 to visualize.
+
+q1: use a combination of **filter**, **ggplot** and **geom_histogram** to create a plot of the **Wins of Ducks** with bin widths of 3
+
+```{r}
+# aes(x=?, y=?), in this case only need x aes
+wins_tidy %>% filter(Team=='Ducks')%>%
+  ggplot(aes(Wins))+geom_histogram(binwidth = 3)+xlab('wins')+ylab('Count')
+```
+
+q2: use **geom_density** to create two density plots with parameters **adjust=0.5** and **adjust=2**
+
+```{r}
+wins_tidy %>% filter(Team=='Ducks')%>%
+  ggplot(aes(Wins))+geom_density(adjust=0.5)+ylab('Count')
+wins_tidy %>% filter(Team=='Ducks')%>%
+  ggplot(aes(Wins))+geom_density(adjust=2)+ylab('Count')
+```
+
+the difference between two plots is the former plot has 2 mode but the latter has only 1 mode. Moreover, the former plot's modes density are more higher than the latter plot's mode.
+
+q3: create a bivariate plot. Transform **wins_tidy** to **wins_teams**, to show each team's wins in every game year. Hint: use **select** and **pivot_wider**
+
+```{r}
+# pivot_wider is on the contrary of pivot_longer
+#   names_from ---> new columns based on which original column
+#   values_from ---> new cell value based on which original column
+wins_teams <- wins_tidy %>%
+  select(-Total)%>%
+  pivot_wider(names_from = Team, values_from = Wins)
+```
+
+check
+
+```{r}
+wins_teams
+```
+
+then use **geom_point** to create a scatter plot of the wins of Ducks and wins of Eagles
+
+```{r}
+scatter_plot<-wins_teams %>% select(Ducks, Eagles)%>%
+  ggplot(aes(x=Ducks,y=Eagles))+geom_point()
+scatter_plot
+```
+
+use **geom_smooth** to show the relationship of this scatter plot
+
+```{r}
+# method to control curve type
+scatter_plot+geom_smooth()
+scatter_plot+geom_smooth(method="glm")
+```
