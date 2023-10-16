@@ -338,7 +338,7 @@ I think it is not a tidy data because the columns describe a single variable: ye
 the definition of tidy data and how to tidy data is taught in the following link:\
 <https://tidyr.tidyverse.org/articles/tidy-data.html#defining>
 
-q1: transform the **wins_data_frame** into a data frame called **wins_tidy** which contains the same information but has just four columns entitled: \"Team\", \"Year\", \"Wins\", \"Total\". Hint: can do this by using **rename**, **pivot_longer**, **mutate** and **separate**
+q1: transform the **wins_data_frame** into a data frame called **wins_tidy** which contains the same information but has just four columns entitled: "Team", "Year", "Wins", "Total". Hint: can do this by using **rename**, **pivot_longer**, **mutate** and **separate**
 
 ```{r}
 # the point is use of rename: new_n=old_n
