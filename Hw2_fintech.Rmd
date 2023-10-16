@@ -5,8 +5,8 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 
-
 To begin, install the 'quantmod' package and load stock price data from Yahoo Finance.
+
 ```{r eval=FALSE, include=FALSE}
 install.packages('quantmod')
 ```
@@ -22,6 +22,7 @@ df_AAPL <- data.frame(Date=as.character(index(AAPL)), coredata(AAPL))
 ## 1.Data Wrangling
 
 q1: inspect the dataset with **head**, and check if there is any NA value in each column
+
 ```{r}
 df_AAPL %>% head(5)
 df_AAPL %>% summarise(across(everything(),
@@ -48,13 +49,14 @@ df_all <- df_AAPL%>%select(Date, AAPL.Open, AAPL.Close) %>%
 ```
 
 check
+
 ```{r}
 df_all %>% head(5)
 ```
 
 ## 2. Data Wrangling and Visualization
 
-q3: caculate the intraday return into \{stockname\}.R
+q3: caculate the intraday return into {stockname}.R
 
 ```{r}
 df_all <- df_all %>% mutate(AAPL.R= (AAPL.Close-AAPL.Open)/AAPL.Open)
@@ -64,25 +66,32 @@ df_all <- df_all %>% mutate(MS.R= (MS.Close-MS.Open)/MS.Open)
 ```
 
 q4: plot the density of AAPL.R using **ggplot** and **geom_density**
+
 ```{r}
 # use 'fill' arg to control filling color
 df_all%>%ggplot(aes(AAPL.R))+geom_density(fill='blue')+xlab('AAPL.Return')+ylab('Density of Return')
 ```
 
 q5: we need to extract the information of stock performance by year. First split column **Date** into "Year", "Month" and "Day" and create a new frame called **df_ymd** transformed by **df_all**
+
 ```{r}
 df_ymd <- df_all%>%
   separate(Date, c("Year", "Month", "Day"), sep='-')
 ```
-check 
+
+check
+
 ```{r}
 df_ymd %>% head(5)
 ```
+
 q6: create a boxplot of MS.R using **ggplot** and **geom_boxplot**. To distinguish returns across different years, utilize the **aes()**
+
 ```{r}
 df_ymd %>% 
   ggplot(aes(x=MS.R, y=Year))+geom_boxplot()
 ```
+
 From this boxplot, we can see that the inner quartile range is shrinking across the year while the median of the returns stay steady nearly 0. The abnormal movements in the stock may lie in 2008 since it has a wide IQR and there are a lot of outliers, this phenomenon may reflect that the stock is going through some changes and is fluctuating.
 
 ## 3. Data Wrangling, Tidying and Visualization
@@ -99,12 +108,12 @@ df_sum <- df_ymd%>%
 ```
 
 check
+
 ```{r}
 df_sum %>% head(5)
 ```
 
-q8: tidy df_sum since the columns, and generate bar-chart for AAPL.Mn and Ms.Mn over months
-[non-tidy since columns represent a single variable]
+q8: tidy df_sum since the columns, and generate bar-chart for AAPL.Mn and Ms.Mn over months [non-tidy since columns represent a single variable]
 
 ```{r}
 # utilize pivot_longer to transform columns to a single column: Stock
@@ -112,12 +121,15 @@ long_df <- df_sum %>%
   pivot_longer(!Month ,names_to = 'Stock', values_to = 'Returns')
 
 ```
+
 check
 
 ```{r}
 long_df %>% head(10)
 ```
+
 then use **ggplot** to show bar-chart over different months
+
 ```{r}
 # ggplot:
 #   fill---> filling the color according to the specified column
